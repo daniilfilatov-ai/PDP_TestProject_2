@@ -1,6 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
-ILogger logger = factory.CreateLogger("Program");
-logger.LogInformation("That is test log message");
-logger.LogError("That is test error message");
+var builder = Host.CreateApplicationBuilder(args);
+builder.Logging.AddConsole();
+
+using IHost host = builder.Build();
+
+var logger = host.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("Logger ready fo work!");
