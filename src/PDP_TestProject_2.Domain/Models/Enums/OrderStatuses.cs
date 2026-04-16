@@ -2,7 +2,7 @@
 public enum OrderStatuses
 {
     Completed,
-    Canseled,
+    Canceled,
     Returned,
     PostVoided
 }
