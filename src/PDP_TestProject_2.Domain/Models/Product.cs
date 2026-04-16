@@ -1,6 +1,4 @@
-﻿using PDP_TestProject_2.Domain.Models.Enums;
-
-namespace PDP_TestProject_2.Domain.Models;
+﻿namespace PDP_TestProject_2.Domain.Models;
 
 public sealed class Product
 {

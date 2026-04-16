@@ -1,4 +1,4 @@
-﻿using PDP_TestProject_2.Domain.Models.Enums;
+﻿using PDP_TestProject_2.Domain.Enums;
 
 namespace PDP_TestProject_2.Domain.Models;
 
