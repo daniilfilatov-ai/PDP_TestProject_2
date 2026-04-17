@@ -2,6 +2,6 @@
 
 public sealed class OrderItems
 {
-    public required Product Prod { get; set; }
+    public required Product Item { get; set; }
     public int Quantity { get; set; }
 }
