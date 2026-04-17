@@ -8,4 +8,4 @@ builder.Logging.AddConsole();
 using IHost host = builder.Build();
 
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
-logger.LogInformation("Logger ready fo work!");
+logger.LogInformation("Logger ready for work!");
