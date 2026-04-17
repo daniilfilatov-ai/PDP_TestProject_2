@@ -10,5 +10,5 @@ public sealed class Order
     OrderTypes Type { get; set; }
     OrderStatuses Status { get; set; }
     public decimal TotalPrice { get; set; }
-    public List<(Product product, int quantity)> Items { get; set; } = [];
+    public List<OrderItems> Items { get; set; } = [];
 }
