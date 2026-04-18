@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="10.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PDP_TestProject_2.Application\PDP_TestProject_2.Application.csproj" />
   </ItemGroup>
 
