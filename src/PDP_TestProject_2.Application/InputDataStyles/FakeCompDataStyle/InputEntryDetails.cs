@@ -9,7 +9,7 @@ public sealed class InputEntryDetails
     [JsonPropertyName("display_title")]
     public string DisplayTitle { get; set; } = string.Empty;
     [JsonPropertyName("unit_cost_cents")]
-    public decimal UnitCostCents { get; set; }
+    public int UnitCostCents { get; set; }
     [JsonPropertyName("group_info")]
     public InputGroupInfo GroupInfo { get; set; } = null!;
 }

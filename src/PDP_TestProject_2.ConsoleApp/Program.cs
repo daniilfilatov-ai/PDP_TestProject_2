@@ -14,17 +14,36 @@ var logger = host.Services.GetRequiredService<ILogger<Program>>();
 var orderService = new OrderService();
 var processor = new DataProcessor(orderService);
 
-string inputPath = Path.Combine(AppContext.BaseDirectory, "fakeComp_orders.json");
-string outputPath = Path.Combine(AppContext.BaseDirectory, "output.json");
+string exePath = AppContext.BaseDirectory;
+string projectRoot = Path.GetFullPath(Path.Combine(exePath, "..", "..", ".."));
+
+string inputFolder = Path.Combine(projectRoot, "input");
+string outputFolder = Path.Combine(projectRoot, "output");
 
 logger.LogInformation("Started processing orders");
 
-try
+string[] jsonFiles = Directory.GetFiles(inputFolder, "*.json");
+
+logger.LogInformation("{Count} files found for processing", jsonFiles.Length);
+
+foreach (var inputPath in jsonFiles)
 {
-    processor.Extract(inputPath, outputPath);
-    logger.LogInformation("Operation succeed");
+    string inputFileName = Path.GetFileNameWithoutExtension(inputPath);
+    string outputFileName = $"output_{inputFileName}.json";
+    string outputPath = Path.Combine(outputFolder, outputFileName);
+
+    logger.LogInformation("Output file {OutputName} successfully created", outputFileName);
+
+    try
+    {
+
+        processor.Extract(inputPath, outputPath);
+        logger.LogInformation("Operation succeed");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while processing order");
+    }
 }
-catch (Exception ex)
-{
-    logger.LogError($"Error: {ex.Message}");
-}
+
+logger.LogInformation("All files processed");

@@ -20,4 +20,9 @@
     <ProjectReference Include="..\PDP_TestProject_2.Infrastructure\PDP_TestProject_2.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Input\" />
+    <Folder Include="Output\" />
+  </ItemGroup>
+
 </Project>

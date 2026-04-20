@@ -17,7 +17,7 @@ public sealed class OrderService
                 CreatedBy = dto.OperatorName,
                 Type = Enum.TryParse<OrderTypes>(dto.Method, true, out var t) ? t : OrderTypes.InPlaced,
                 Status = Enum.TryParse<OrderStatuses>(dto.CurrentState, true, out var s) ? s : OrderStatuses.Completed,
-                TotalPrice = dto.TotalAmountCents,
+                TotalPrice = dto.TotalAmountCents / 100,
                 Items = dto.LineItems.Select(line => new OrderItems
                 {
                     Quantity = line.UnitCount,
@@ -25,7 +25,7 @@ public sealed class OrderService
                     {
                         Id = line.EntryDetails.SkuCode,
                         Name = line.EntryDetails.DisplayTitle,
-                        UnitPrice = line.EntryDetails.UnitCostCents,
+                        UnitPrice = line.EntryDetails.UnitCostCents / 100,
                         Category = new ProductCategory
                         {
                             Id = line.EntryDetails.GroupInfo.GroupId,

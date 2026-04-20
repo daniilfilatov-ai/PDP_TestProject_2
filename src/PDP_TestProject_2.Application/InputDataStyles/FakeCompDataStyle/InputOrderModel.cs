@@ -14,7 +14,7 @@ public sealed class InputOrderModel
     [JsonPropertyName("current_state")]
     public string CurrentState { get; set; } = string.Empty;
     [JsonPropertyName("total_amount_cents")]
-    public decimal TotalAmountCents { get; set; }
+    public int TotalAmountCents { get; set; }
     [JsonPropertyName("line_items")]
     public List<InputLineItem> LineItems { get; set; } = [];
 }
