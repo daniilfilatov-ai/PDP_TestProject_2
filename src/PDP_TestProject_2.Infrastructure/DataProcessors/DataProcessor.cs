@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 using PDP_TestProject_2.Domain.Models;
 using PDP_TestProject_2.Application.InputDataStyles.FakeCompDataStyle;
-using PDP_TestProject_2.Application.Services;
+using PDP_TestProject_2.Application.DataMapping;
 
 namespace PDP_TestProject_2.Infrastructure.DataProcessors;
 
-public sealed class DataProcessor (OrderService orderService)
+public sealed class DataProcessor (OrderDataMapping orderService)
 {
     public void Extract(string inputPath, string outputPath)
     {

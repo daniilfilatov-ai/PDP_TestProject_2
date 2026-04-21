@@ -2,9 +2,9 @@
 using PDP_TestProject_2.Domain.Models;
 using PDP_TestProject_2.Application.InputDataStyles.FakeCompDataStyle;
 
-namespace PDP_TestProject_2.Application.Services;
+namespace PDP_TestProject_2.Application.DataMapping;
 
-public sealed class OrderService
+public sealed class OrderDataMapping
 {
     public List<Order> Transform(List<InputOrderModel> rawData)
     {

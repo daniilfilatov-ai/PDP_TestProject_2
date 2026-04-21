@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PDP_TestProject_2.Application.Services;
+using PDP_TestProject_2.Application.DataMapping;
 using PDP_TestProject_2.Infrastructure.DataProcessors;
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -11,8 +11,13 @@ using IHost host = builder.Build();
 
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
-var orderService = new OrderService();
-var processor = new DataProcessor(orderService);
+var services = new ServiceCollection()
+    .AddSingleton<OrderDataMapping>()
+    .AddTransient<DataProcessor>()
+    .BuildServiceProvider();
+
+var orderService = services.GetRequiredService<OrderDataMapping>();
+var processor = services.GetRequiredService<DataProcessor>();
 
 string exePath = AppContext.BaseDirectory;
 string projectRoot = Path.GetFullPath(Path.Combine(exePath, "..", "..", ".."));
