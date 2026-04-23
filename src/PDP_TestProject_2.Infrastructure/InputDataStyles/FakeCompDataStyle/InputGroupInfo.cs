@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace PDP_TestProject_2.Application.InputDataStyles.FakeCompDataStyle;
+namespace PDP_TestProject_2.Infrastructure.InputDataStyles.FakeCompDataStyle;
 
 public sealed class InputGroupInfo
 {

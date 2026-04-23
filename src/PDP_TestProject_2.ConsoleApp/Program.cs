@@ -1,10 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PDP_TestProject_2.Application.DataMapping;
-using PDP_TestProject_2.Infrastructure.DataProcessors;
+using PDP_TestProject_2.Application.Interfaces;
+using PDP_TestProject_2.Infrastructure.InputDataStyles.FakeCompDataStyle;
+using PDP_TestProject_2.Infrastructure.OrderMapper;
+using PDP_TestProject_2.Infrastructure.OrderReader;
+using PDP_TestProject_2.Infrastructure.OrderWriter;
+using PDP_TestProject_2.Application.Service;
+
 
 var builder = Host.CreateApplicationBuilder(args);
+
 builder.Logging.AddConsole();
 
 using IHost host = builder.Build();
@@ -12,43 +18,50 @@ using IHost host = builder.Build();
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
 var services = new ServiceCollection()
-    .AddSingleton<OrderDataMapping>()
-    .AddTransient<DataProcessor>()
+    .AddTransient<IOrderReader<InputOrderModel>, OrderReader>()
+    .AddTransient<IOrderMapper<InputOrderModel>, OrderMapper>()
+    .AddTransient<IOrderWriter, OrderWriter>()
+    .AddTransient<OrderService<InputOrderModel>>()
     .BuildServiceProvider();
-
-var orderService = services.GetRequiredService<OrderDataMapping>();
-var processor = services.GetRequiredService<DataProcessor>();
-
-string exePath = AppContext.BaseDirectory;
-string projectRoot = Path.GetFullPath(Path.Combine(exePath, "..", "..", ".."));
-
-string inputFolder = Path.Combine(projectRoot, "input");
-string outputFolder = Path.Combine(projectRoot, "output");
-
-logger.LogInformation("Started processing orders");
-
-string[] jsonFiles = Directory.GetFiles(inputFolder, "*.json");
-
-logger.LogInformation("{Count} files found for processing", jsonFiles.Length);
-
-foreach (var inputPath in jsonFiles)
+try
 {
-    string inputFileName = Path.GetFileNameWithoutExtension(inputPath);
-    string outputFileName = $"output_{inputFileName}.json";
-    string outputPath = Path.Combine(outputFolder, outputFileName);
+    // Retrieve the order processor service
+    var processor = services.GetRequiredService<OrderService<InputOrderModel>>();
+
+    // Get the input file path from command-line arguments
+    var inputFilePath = args[0];
+
+    logger.LogInformation("Started processing orders");
+
+    if (string.IsNullOrWhiteSpace(inputFilePath) || !File.Exists(inputFilePath))
+    {
+        throw new FileNotFoundException("Input file unavailable");
+    }
+
+    if (!(Path.GetExtension(inputFilePath)).Equals(".json", StringComparison.OrdinalIgnoreCase))
+    {
+        throw new ArgumentException("Input file has an invalid extension");
+    }
+
+    var inputFileName = Path.GetFileNameWithoutExtension(inputFilePath);
+
+    var outputFileName = $"output_{inputFileName}.json";
+
+    // Define the output directory path within the application's base directory
+    var outputPath = Path.Combine(AppContext.BaseDirectory, "outputs");
+    
+    // Create the output directory if it doesn't already exist
+    Directory.CreateDirectory(outputPath);
+    
+    var outputFilePath = Path.Combine(outputPath, outputFileName);
+
+    // Execute the Process method to process orders from input to output file
+    processor.Process(inputFilePath, outputFilePath);
 
     logger.LogInformation("Output file {OutputName} successfully created", outputFileName);
-
-    try
-    {
-
-        processor.Extract(inputPath, outputPath);
-        logger.LogInformation("Operation succeed");
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "An error occurred while processing order");
-    }
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "An error occurred while processing order");
 }
 
-logger.LogInformation("All files processed");
