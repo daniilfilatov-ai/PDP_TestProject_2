@@ -7,16 +7,16 @@ namespace PDP_TestProject_2.Infrastructure.OrderWriter;
 
 public sealed class OrderWriter : IOrderWriter
 {
-    public void Write(List<Order> orders, string outputFilePath)
+    private static readonly JsonSerializerOptions _options = new()
     {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            Converters =
+        WriteIndented = true,
+        Converters =
             {
                 new JsonStringEnumConverter()
             }
-        };
-        File.WriteAllText(outputFilePath, JsonSerializer.Serialize(orders, options));
+    };
+    public void Write(List<Order> orders, string outputFilePath)
+    {
+                File.WriteAllText(outputFilePath, JsonSerializer.Serialize(orders, _options));
     }
 }

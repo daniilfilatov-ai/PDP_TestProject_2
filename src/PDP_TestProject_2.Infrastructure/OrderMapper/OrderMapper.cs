@@ -14,9 +14,8 @@ public sealed class OrderMapper : IOrderMapper<InputOrderModel>
             Id = dto.TransactionId,
             CreatedAt = dto.TimeStamp,
             CreatedBy = dto.OperatorName,
-            // TODO: I'm not sure what the default values ​​for Status and Type should be. 
-            Type = Enum.TryParse<OrderTypes>(dto.Method, true, out var t) ? t : OrderTypes.InPlaced,
-            Status = Enum.TryParse<OrderStatuses>(dto.CurrentState, true, out var s) ? s : OrderStatuses.Completed,
+            Type = (OrderTypes)Enum.Parse(typeof(OrderTypes), dto.Method, true),
+            Status = (OrderStatuses)Enum.Parse(typeof(OrderStatuses), dto.CurrentState, true),
 
             TotalPrice = dto.TotalAmountCents / 100m,
             Items = dto.LineItems.Select(line => new OrderItems

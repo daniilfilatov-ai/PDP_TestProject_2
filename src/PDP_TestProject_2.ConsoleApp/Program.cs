@@ -21,12 +21,12 @@ var services = new ServiceCollection()
     .AddTransient<IOrderReader<InputOrderModel>, OrderReader>()
     .AddTransient<IOrderMapper<InputOrderModel>, OrderMapper>()
     .AddTransient<IOrderWriter, OrderWriter>()
-    .AddTransient<OrderService<InputOrderModel>>()
+    .AddTransient<IOrderService, OrderService<InputOrderModel>>()
     .BuildServiceProvider();
 try
 {
     // Retrieve the order processor service
-    var processor = services.GetRequiredService<OrderService<InputOrderModel>>();
+    var processor = services.GetRequiredService<IOrderService>();
 
     // Get the input file path from command-line arguments
     var inputFilePath = args[0];
