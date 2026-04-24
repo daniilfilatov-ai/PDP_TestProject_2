@@ -38,7 +38,7 @@ try
         throw new FileNotFoundException("Input file unavailable");
     }
 
-    if (!(Path.GetExtension(inputFilePath)).Equals(".json", StringComparison.OrdinalIgnoreCase))
+    if (!Path.GetExtension(inputFilePath).Equals(".json", StringComparison.OrdinalIgnoreCase))
     {
         throw new ArgumentException("Input file has an invalid extension");
     }
@@ -50,7 +50,6 @@ try
     // Define the output directory path within the application's base directory
     var outputPath = Path.Combine(AppContext.BaseDirectory, "outputs");
     
-    // Create the output directory if it doesn't already exist
     Directory.CreateDirectory(outputPath);
     
     var outputFilePath = Path.Combine(outputPath, outputFileName);
