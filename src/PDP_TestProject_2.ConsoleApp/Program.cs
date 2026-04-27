@@ -23,25 +23,30 @@ var services = new ServiceCollection()
     .AddTransient<IOrderWriter, OrderWriter>()
     .AddTransient<IOrderService, OrderService<InputOrderModel>>()
     .BuildServiceProvider();
+
 try
 {
+    if (args.Length == 0 || string.IsNullOrWhiteSpace(args[0]))
+    {
+        throw new ArgumentException("Path to the input file is missing");
+    }
+
+    if(!File.Exists(args[0]))
+    {
+        throw new FileNotFoundException("Input file does not exist at the given path");
+    }
     // Retrieve the order processor service
     var processor = services.GetRequiredService<IOrderService>();
 
     // Get the input file path from command-line arguments
     var inputFilePath = args[0];
-
-    logger.LogInformation("Started processing orders");
-
-    if (string.IsNullOrWhiteSpace(inputFilePath) || !File.Exists(inputFilePath))
-    {
-        throw new FileNotFoundException("Input file unavailable");
-    }
-
+        
     if (!Path.GetExtension(inputFilePath).Equals(".json", StringComparison.OrdinalIgnoreCase))
     {
         throw new ArgumentException("Input file has an invalid extension");
     }
+
+    logger.LogInformation("Started processing orders");
 
     var inputFileName = Path.GetFileNameWithoutExtension(inputFilePath);
 

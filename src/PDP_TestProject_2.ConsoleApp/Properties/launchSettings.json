@@ -1,8 +1,7 @@
 {
   "profiles": {
     "PDP_TestProject_2.ConsoleApp": {
-      "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\daniil.filatov\\source\\repos\\PDP_TestProject_2\\src\\PDP_TestProject_2.ConsoleApp\\Inputs\\fakeComp_orders.json"
+      "commandName": "Project"
     }
   }
 }
