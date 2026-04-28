@@ -2,7 +2,7 @@
 
 namespace PDP_TestProject_2.Application.Interfaces;
 
-public interface IOrderMapper<T>
+public interface IOrderMapper<TInputData, TOutputData>
 {
-    List<Order> Map(List<T> rawData);
+    IEnumerable<TOutputData> Map(IEnumerable<TInputData> rawData);
 }

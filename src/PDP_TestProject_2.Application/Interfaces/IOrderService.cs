@@ -1,7 +1,7 @@
 ﻿
 namespace PDP_TestProject_2.Application.Interfaces;
 
-public interface IOrderService
+public interface IOrderService<TInputPath, TOutputPath>
 {
-    void Process(string inputFilePath, string outputFilePath);
+    Task ProcessAsync(TInputPath inputFilePath, TOutputPath outputFilePath);
 }

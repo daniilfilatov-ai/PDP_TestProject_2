@@ -2,7 +2,7 @@
 
 namespace PDP_TestProject_2.Application.Interfaces;
 
-public interface IOrderWriter
+public interface IOrderWriter<TOutputData, TOutputPath>
 {
-    void Write(List<Order> orders, string outputFilePath);
+    Task WriteAsync(IEnumerable<TOutputData> orders, TOutputPath outputFilePath);
 }

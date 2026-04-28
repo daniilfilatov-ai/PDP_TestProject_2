@@ -1,6 +1,6 @@
 ﻿namespace PDP_TestProject_2.Application.Interfaces;
 
-public interface IOrderReader<T>
+public interface IOrderReader<TInputPath, TOutputData>
 {
-    List<T> Read(string inputFilePath);
+    Task<IEnumerable<TOutputData>> ReadAsync(TInputPath inputFilePath);
 }
