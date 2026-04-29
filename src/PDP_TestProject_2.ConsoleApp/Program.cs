@@ -15,7 +15,7 @@ var services = new ServiceCollection()
     .AddTransient<IFileDataReader<InputOrderModel>, FakeCompOrderReader>()
     .AddTransient<IRawDataMapper<InputOrderModel, Order>, FakeCompOrderMapper>()
     .AddTransient<IFileWriter<Order>, FakeCompOrderWriter>()
-    .AddTransient<IFileDataService, OrderService<InputOrderModel, Order>>()
+    .AddTransient<IFileDataService, FileDataService<InputOrderModel, Order>>()
     .BuildServiceProvider();
 
 var logger = services.GetRequiredService<ILogger<Program>>();

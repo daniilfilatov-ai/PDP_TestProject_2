@@ -13,13 +13,13 @@ public sealed class FakeCompOrderReader(ILogger<FakeCompOrderReader> logger) : I
 
         await using var stream = File.OpenRead(inputFilePath);
 
-        var rawData = JsonSerializer.DeserializeAsync<List<InputOrderModel>>(
+        var rawData = await JsonSerializer.DeserializeAsync<List<InputOrderModel>>(
             stream,
             cancellationToken: cancellationToken
             );
 
-        logger.LogInformation("Successfully read entries: {Count}", rawData.Result?.Count);
+        logger.LogInformation("Successfully read entries: {Count}", rawData?.Count);
 
-        return rawData.Result ?? Enumerable.Empty<InputOrderModel>();
+        return rawData ?? Enumerable.Empty<InputOrderModel>();
     }
 }

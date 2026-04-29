@@ -1,7 +1,7 @@
 ﻿using PDP_TestProject_2.Application.Interfaces;
 namespace PDP_TestProject_2.Infrastructure.Service;
 
-public sealed class OrderService<TInputData, TOutputData>(
+public sealed class FileDataService<TInputData, TOutputData>(
     IFileDataReader<TInputData> reader,
     IRawDataMapper<TInputData, TOutputData> mapper,
     IFileWriter<TOutputData> writer) : IFileDataService
