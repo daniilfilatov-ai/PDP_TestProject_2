@@ -1,6 +1,7 @@
 ﻿using PDP_TestProject_2.Domain.Enums;
 using PDP_TestProject_2.Domain.Models;
 using PDP_TestProject_2.Infrastructure.Integrations.FakeCompData.Models;
+using PDP_TestProject_2.Application.Extensions;
 
 namespace PDP_TestProject_2.Infrastructure.Integrations.FakeCompData.Extensions;
 
@@ -53,10 +54,5 @@ public static class FakeCompMappingExtensions
             Name = group.Label,
             Description = group.Details
         };
-    }
-
-    public static decimal FromCents(this int cents)
-    {
-        return cents / 100m;
     }
 }
