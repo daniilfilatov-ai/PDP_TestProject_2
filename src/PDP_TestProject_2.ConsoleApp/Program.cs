@@ -12,10 +12,10 @@ var services = new ServiceCollection()
     {
         builder.AddConsole();
     })
-    .AddTransient<IOrderReader<string, InputOrderModel>, FakeCompOrderReader>()
-    .AddTransient<IOrderMapper<InputOrderModel, Order>, FakeCompOrderMapper>()
-    .AddTransient<IOrderWriter<Order, string>, FakeCompOrderWriter>()
-    .AddTransient<IOrderService<string, string>, OrderService<InputOrderModel, Order>>()
+    .AddTransient<IFileDataReader<InputOrderModel>, FakeCompOrderReader>()
+    .AddTransient<IRawDataMapper<InputOrderModel, Order>, FakeCompOrderMapper>()
+    .AddTransient<IFileWriter<Order>, FakeCompOrderWriter>()
+    .AddTransient<IService, OrderService<InputOrderModel, Order>>()
     .BuildServiceProvider();
 
 var logger = services.GetRequiredService<ILogger<Program>>();
@@ -31,7 +31,7 @@ try
     {
         throw new FileNotFoundException("Input file does not exist at the given path");
     }
-    var processor = services.GetRequiredService<IOrderService<string, string>>();
+    var processor = services.GetRequiredService<IService>();
 
     var inputFilePath = args[0];
         
@@ -46,13 +46,16 @@ try
 
     var outputFileName = $"output_{inputFileName}.json";
 
+    using CancellationTokenSource cts = new();
+    CancellationToken cancellationToken = cts.Token;
+
     var outputPath = Path.Combine(AppContext.BaseDirectory, "outputs");
-    
+
     Directory.CreateDirectory(outputPath);
-    
+
     var outputFilePath = Path.Combine(outputPath, outputFileName);
 
-    await processor.ProcessAsync(inputFilePath, outputFilePath);
+    await processor.ProcessAsync(inputFilePath, outputFilePath, cancellationToken);
 
     logger.LogInformation("Output file {OutputName} successfully created", outputFileName);
 }

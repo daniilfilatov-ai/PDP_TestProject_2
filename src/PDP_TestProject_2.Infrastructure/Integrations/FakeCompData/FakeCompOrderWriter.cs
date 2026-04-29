@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace PDP_TestProject_2.Infrastructure.Integrations.FakeCompData;
 
-public sealed class FakeCompOrderWriter(ILogger<FakeCompOrderWriter> logger) : IOrderWriter<Order, string>
+public sealed class FakeCompOrderWriter(ILogger<FakeCompOrderWriter> logger) : IFileWriter<Order>
 {
     private static readonly JsonSerializerOptions _options = new()
     {
@@ -16,12 +16,13 @@ public sealed class FakeCompOrderWriter(ILogger<FakeCompOrderWriter> logger) : I
                 new JsonStringEnumConverter()
             }
     };
-    public async Task WriteAsync(IEnumerable<Order> orders, string outputFilePath)
+    public async Task WriteAsync(IEnumerable<Order> orders, string outputFilePath, CancellationToken cancellationToken = default)
     {
+     
         logger.LogInformation("Start writing data to file: {outputFilePath}", outputFilePath);
 
         await using var stream = File.OpenWrite(outputFilePath);
-        CancellationToken cancellationToken = default;
+
         await JsonSerializer.SerializeAsync(
             stream,
             orders,

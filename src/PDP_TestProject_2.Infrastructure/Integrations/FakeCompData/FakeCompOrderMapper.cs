@@ -6,7 +6,7 @@ using PDP_TestProject_2.Infrastructure.Integrations.FakeCompData.Models;
 
 namespace PDP_TestProject_2.Infrastructure.Integrations.FakeCompData;
 
-public sealed class FakeCompOrderMapper(ILogger<FakeCompOrderMapper> logger) : IOrderMapper<InputOrderModel, Order>
+public sealed class FakeCompOrderMapper(ILogger<FakeCompOrderMapper> logger) : IRawDataMapper<InputOrderModel, Order>
 {
     public IEnumerable<Order> Map(IEnumerable<InputOrderModel> rawData)
     {

@@ -2,16 +2,16 @@
 namespace PDP_TestProject_2.Infrastructure.Service;
 
 public sealed class OrderService<TInputData, TOutputData>(
-    IOrderReader<string, TInputData> reader,
-    IOrderMapper<TInputData, TOutputData> mapper,
-    IOrderWriter<TOutputData, string> writer) : IOrderService<string, string>
+    IFileDataReader<TInputData> reader,
+    IRawDataMapper<TInputData, TOutputData> mapper,
+    IFileWriter<TOutputData> writer) : IService
 {
-    public async Task ProcessAsync(string inputFilePath, string outputFilePath)
+    public async Task ProcessAsync(string inputFilePath, string outputFilePath, CancellationToken cancellationToken = default)
     {
-        var rawData = await reader.ReadAsync(inputFilePath);
+        var rawData = await reader.ReadAsync(inputFilePath, cancellationToken);
 
         var orders = mapper.Map(rawData);
 
-        await writer.WriteAsync(orders, outputFilePath);
+        await writer.WriteAsync(orders, outputFilePath, cancellationToken);
     }
 }
