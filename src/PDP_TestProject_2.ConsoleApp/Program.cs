@@ -15,7 +15,7 @@ var services = new ServiceCollection()
     .AddTransient<IFileDataReader<InputOrderModel>, FakeCompOrderReader>()
     .AddTransient<IRawDataMapper<InputOrderModel, Order>, FakeCompOrderMapper>()
     .AddTransient<IFileWriter<Order>, FakeCompOrderWriter>()
-    .AddTransient<IService, OrderService<InputOrderModel, Order>>()
+    .AddTransient<IFileDataService, OrderService<InputOrderModel, Order>>()
     .BuildServiceProvider();
 
 var logger = services.GetRequiredService<ILogger<Program>>();
@@ -31,7 +31,7 @@ try
     {
         throw new FileNotFoundException("Input file does not exist at the given path");
     }
-    var processor = services.GetRequiredService<IService>();
+    var processor = services.GetRequiredService<IFileDataService>();
 
     var inputFilePath = args[0];
         

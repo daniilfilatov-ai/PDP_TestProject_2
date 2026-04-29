@@ -6,12 +6,12 @@ namespace PDP_TestProject_2.Infrastructure.Integrations.FakeCompData.Extensions;
 
 public static class FakeCompMappingExtensions
 {
-    public static IEnumerable<Order> MapToOrders(this IEnumerable<InputOrderModel> rawData)
+    public static IEnumerable<Order> ToOrders(this IEnumerable<InputOrderModel> rawData)
     {
-        return rawData.Select(dto => dto.MapToOrder());
+        return rawData.Select(dto => dto.ToOrder());
     }
 
-    public static Order MapToOrder(this InputOrderModel dto)
+    public static Order ToOrder(this InputOrderModel dto)
     {
         return new Order
         {
@@ -20,32 +20,32 @@ public static class FakeCompMappingExtensions
             CreatedBy = dto.OperatorName,
             Type = (OrderTypes)Enum.Parse(typeof(OrderTypes), dto.Method, true),
             Status = (OrderStatuses)Enum.Parse(typeof(OrderStatuses), dto.CurrentState, true),
-            TotalPrice = dto.TotalAmountCents / 100m,
-            Items = dto.LineItems.Select(line => line.MapToOrderItem()).ToList()
+            TotalPrice = dto.TotalAmountCents.FromCents(),
+            Items = dto.LineItems.Select(line => line.ToOrderItem()).ToList()
         };
     }
 
-    public static OrderItems MapToOrderItem(this InputLineItem line)
+    public static OrderItems ToOrderItem(this InputLineItem line)
     {
         return new OrderItems
         {
             Quantity = line.UnitCount,
-            Item = line.EntryDetails.MapToProduct()
+            Item = line.EntryDetails.ToProduct()
         };
     }
 
-    public static Product MapToProduct(this InputEntryDetails details)
+    public static Product ToProduct(this InputEntryDetails details)
     {
         return new Product
         {
             Id = details.SkuCode,
             Name = details.DisplayTitle,
-            UnitPrice = details.UnitCostCents / 100m,
-            Category = details.GroupInfo.MapToProductCategory()
+            UnitPrice = details.UnitCostCents.FromCents(),
+            Category = details.GroupInfo.ToProductCategory()
         };
     }
 
-    public static ProductCategory MapToProductCategory(this InputGroupInfo group)
+    public static ProductCategory ToProductCategory(this InputGroupInfo group)
     {
         return new ProductCategory
         {
@@ -53,5 +53,10 @@ public static class FakeCompMappingExtensions
             Name = group.Label,
             Description = group.Details
         };
+    }
+
+    public static decimal FromCents(this int cents)
+    {
+        return cents / 100m;
     }
 }

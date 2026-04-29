@@ -4,7 +4,7 @@ namespace PDP_TestProject_2.Infrastructure.Service;
 public sealed class OrderService<TInputData, TOutputData>(
     IFileDataReader<TInputData> reader,
     IRawDataMapper<TInputData, TOutputData> mapper,
-    IFileWriter<TOutputData> writer) : IService
+    IFileWriter<TOutputData> writer) : IFileDataService
 {
     public async Task ProcessAsync(string inputFilePath, string outputFilePath, CancellationToken cancellationToken = default)
     {

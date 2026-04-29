@@ -12,7 +12,7 @@ public sealed class FakeCompOrderMapper(ILogger<FakeCompOrderMapper> logger) : I
     {
         logger.LogInformation("Initiating data mapping");
 
-        var result = rawData.MapToOrders();
+        var result = rawData.ToOrders();
 
         logger.LogInformation("Success mapping");
         return result;
