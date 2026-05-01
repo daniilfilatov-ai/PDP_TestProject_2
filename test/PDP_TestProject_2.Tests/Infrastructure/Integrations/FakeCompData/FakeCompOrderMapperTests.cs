@@ -5,14 +5,14 @@ using PDP_TestProject_2.Domain.Enums;
 using PDP_TestProject_2.Infrastructure.Integrations.FakeCompData;
 using PDP_TestProject_2.Infrastructure.Integrations.FakeCompData.Models;
 
-namespace PDP_TestProject_2.Tests.InfrastructureTesting.FakeCompDataTesting;
+namespace PDP_TestProject_2.Tests.Infrastructure.Integrations.FakeCompData;
 
-public class MapperTests
+public class FakeCompOrderMapperTests
 {
     private readonly ILogger<FakeCompOrderMapper> _loggerMock;
     private readonly IFixture _fixture;
     private readonly FakeCompOrderMapper _sut;
-    public MapperTests()
+    public FakeCompOrderMapperTests()
     {
         _fixture = new Fixture();
         _loggerMock = Substitute.For<ILogger<FakeCompOrderMapper>>();
@@ -23,10 +23,13 @@ public class MapperTests
     [Fact]
     public void Map_ShouldReturnEmptyIEnumerable_WhenInputIsEmpty()
     {
+        // ARRANGE
         var emptyInput = Enumerable.Empty<InputOrderModel>();
 
+        // ACT
         var result = _sut.Map(emptyInput).ToList();
 
+        // ASSERT
         Assert.NotNull(result);
         Assert.Empty(result);
     }
@@ -34,6 +37,7 @@ public class MapperTests
     [Fact]
     public void Map_ShouldCorrectlyMap_ValidInputData()
     {
+        // ARRANGE
         var inputDto = _fixture.Build<InputOrderModel>()
             .With(x => x.TransactionId, 1203)
             .With(x => x.Method, "Delivery")
@@ -43,8 +47,10 @@ public class MapperTests
 
         var inputList = new List<InputOrderModel> { inputDto };
 
+        // ACT
         var result = _sut.Map(inputList).ToList();
 
+        // ASSERT
         Assert.Single(result);
 
         var mappedOrder = result.First();
@@ -58,6 +64,7 @@ public class MapperTests
     [Fact]
     public void Map_ShouldThrowArgumentException_WhenMethodIsUnknown()
     {
+        // ARRANGE
         var inputDto = _fixture.Build<InputOrderModel>()
             .With(x => x.TransactionId, 1203)
             .With(x => x.Method, "Unknown")
@@ -67,6 +74,7 @@ public class MapperTests
 
         var inputList = new List<InputOrderModel> { inputDto };
 
+        // ACT & ASSERT
         var exception = Assert.Throws<ArgumentException>(() => _sut.Map(inputList).ToList());
 
         Assert.Contains("Unknown", exception.Message);
@@ -75,6 +83,7 @@ public class MapperTests
     [Fact]
     public void Map_ShouldThrowArgumentException_WhenStatusIsUnknown()
     {
+        // ARRANGE
         var inputDto = _fixture.Build<InputOrderModel>()
             .With(x => x.TransactionId, 1203)
             .With(x => x.Method, "Delivery")
@@ -84,6 +93,7 @@ public class MapperTests
 
         var inputList = new List<InputOrderModel> { inputDto };
 
+        // ACT & ASSERT
         var exception = Assert.Throws<ArgumentException>(() => _sut.Map(inputList).ToList());
 
         Assert.Contains("Unknown", exception.Message);

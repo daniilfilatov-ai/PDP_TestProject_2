@@ -1,25 +1,19 @@
-﻿using AutoFixture;
-using Castle.Core.Logging;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
-using PDP_TestProject_2.Application.Interfaces;
-using PDP_TestProject_2.Domain.Models;
 using PDP_TestProject_2.Domain.Enums;
+using PDP_TestProject_2.Domain.Models;
 using PDP_TestProject_2.Infrastructure.Integrations.FakeCompData;
-using PDP_TestProject_2.Infrastructure.Integrations.FakeCompData.Models;
-using PDP_TestProject_2.Infrastructure.Service;
-using Xunit;
 using System.Text.Json;
 
-namespace PDP_TestProject_2.Tests.InfrastructureTesting.FakeCompDataTesting;
+namespace PDP_TestProject_2.Tests.Infrastructure.Integrations.FakeCompData;
 
-public class WriterTests
+public class FakeCompOrderWriterTests
 {
     private readonly ILogger<FakeCompOrderWriter> _loggerMock;
     private readonly FakeCompOrderWriter _sut;
     private readonly string _outputFilePath;
 
-    public WriterTests()
+    public FakeCompOrderWriterTests()
     {
         _loggerMock = Substitute.For<ILogger<FakeCompOrderWriter>>();
         _sut = new FakeCompOrderWriter(_loggerMock);
@@ -33,6 +27,7 @@ public class WriterTests
     [Fact]
     public async Task WriteAsync_ShouldWriteCorrectJsonData()
     {
+        // ARRANGE
         await File.WriteAllTextAsync(_outputFilePath, string.Empty);
 
         var orders = new List<Order>
@@ -48,9 +43,10 @@ public class WriterTests
             }
         };
 
-
+        // ACT
         await _sut.WriteAsync(orders, _outputFilePath);
 
+        // ASSERT
         var writtenJson = await File.ReadAllTextAsync(_outputFilePath);
 
         Assert.False(string.IsNullOrWhiteSpace(writtenJson));

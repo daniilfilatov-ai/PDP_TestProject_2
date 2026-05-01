@@ -2,15 +2,15 @@
 using NSubstitute;
 using PDP_TestProject_2.Infrastructure.Integrations.FakeCompData;
 
-namespace PDP_TestProject_2.Tests.InfrastructureTesting.FakeCompDataTesting;
+namespace PDP_TestProject_2.Tests.Infrastructure.Integrations.FakeCompData;
 
-public class ReaderTests
+public class FakeCompOrderReaderTests
 {
     private readonly ILogger<FakeCompOrderReader> _loggerMock;
     private readonly FakeCompOrderReader _sut;
     private readonly string _inputFilePath;
 
-    public ReaderTests()
+    public FakeCompOrderReaderTests()
     {
         _loggerMock = Substitute.For<ILogger<FakeCompOrderReader>>();
         _sut = new FakeCompOrderReader(_loggerMock);
@@ -24,6 +24,7 @@ public class ReaderTests
     [Fact]
     public async Task ReadAsync_ShouldDeserializeData_WhenFileIsValidJson()
     {
+        // ARRANGE
         var validJson = @"
             [
                 {
@@ -39,8 +40,10 @@ public class ReaderTests
 
         await File.WriteAllTextAsync( _inputFilePath, validJson );
 
+        // ACT
         var result = (await _sut.ReadAsync(_inputFilePath)).ToList();
         
+        // ASSERT
         Assert.Single(result);
 
         var firstTestOrder = result[0];
