@@ -12,7 +12,7 @@ public sealed class FakeCompOrderReader(ILogger<FakeCompOrderReader> logger) : I
         logger.LogInformation("Trying read file: {inputFilePath}", inputFilePath);
 
         await using var stream = File.OpenRead(inputFilePath);
-
+        
         var rawData = await JsonSerializer.DeserializeAsync<List<InputOrderModel>>(
             stream,
             cancellationToken: cancellationToken

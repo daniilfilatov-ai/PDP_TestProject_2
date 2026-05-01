@@ -3,4 +3,5 @@
   <Project Path="src/PDP_TestProject_2.ConsoleApp/PDP_TestProject_2.ConsoleApp.csproj" Id="b58567a9-6df9-4d27-aa29-d49917470128" />
   <Project Path="src/PDP_TestProject_2.Domain/PDP_TestProject_2.Domain.csproj" Id="929dadd5-6219-4347-a080-605dca5a3fde" />
   <Project Path="src/PDP_TestProject_2.Infrastructure/PDP_TestProject_2.Infrastructure.csproj" Id="132dd404-d2d9-4409-89bf-8d6cd868ca9e" />
+  <Project Path="test/PDP_TestProject_2.Tests/PDP_TestProject_2.Tests.csproj" />
 </Solution>
